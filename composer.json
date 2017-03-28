@@ -15,7 +15,7 @@
   },
   "autoload": {
       "psr-4": {
-          "PeterLeng\\SpringSearch": "src/"
+          "PeterLeng\\SpringSearch\\": "src/"
       }
   },
   "minimum-stability": "stable",
