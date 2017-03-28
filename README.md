@@ -42,9 +42,9 @@ I was inspired and most of the implementation is based on [Elasticquent](https:/
 }
 ```
 
-- Add the service provider to your `app/config/app.php` file, inside the `providers` array: `'PeterLeng\SpringSearch\SpringSearchServiceProvider'`
+- Add the service provider to your `app/config/app.php` file, inside the `providers` array: `SpringSearch\SpringSearchServiceProvider::class`
 
-- Publish the config file by running the following command in the terminal: `php artisan vendor:publish --provider="PeterLeng\SpringSearch\SpringSearchServiceProvider" --tag="config"
+- Publish the config file by running the following command in the terminal: `php artisan vendor:publish --provider="SpringSearch\SpringSearchServiceProvider" --tag="config"
 `
 
 - Edit the config files (located in `app/config/spring`) and set the Elasticsearch index name, server configuration, etc.
@@ -54,7 +54,7 @@ I was inspired and most of the implementation is based on [Elasticquent](https:/
 There's only one step to tell your models that they should use SpringSearch. Just add a trait! I'll be using a fictional `Product` model for the examples.
 
 ```php
-use PeterLeng\SpringSearch\SpringModelTrait;
+use SpringSearch\SpringModelTrait;
 
 class Product extends Eloquent {
     
@@ -193,7 +193,7 @@ Mappings can be created as easily as anything you've seen until now. They are de
 
 Add mapping properties to a model:
 ```php
-use PeterLeng\SpringSearch\SpringModelTrait;
+use SpringSearch\SpringModelTrait;
 
 class Product extends Eloquent {
     
@@ -389,7 +389,7 @@ $products = Product::moreLikeThis(Array $fields, Array $ids, $minTermFreq = 1, $
 SpringSearch will use your model's attributes while indexing and that should be fine for most cases. However, if you want to have control over the Elasticsearch documents structure, you can customize the fields by adding a `$documentFields` method to your model:
 
 ```php
-use PeterLeng\SpringSearch\SpringModelTrait;
+use SpringSearch\SpringModelTrait;
 
 class Product extends Eloquent {
     
@@ -413,7 +413,7 @@ If you are using a custom collection for Eloquent, you can still keep using Spri
 
 ```php
 use Illuminate\Database\Eloquent\Collection;
-use PeterLeng\SpringSearch\SpringCollectionTrait;
+use SpringSearch\SpringCollectionTrait;
 
 class MyAwesomeCollection extends Collection {
 
@@ -424,7 +424,7 @@ class MyAwesomeCollection extends Collection {
 
 ## Elasticsearch Client Facade
 
-Finally, when you'll need it, you can access Elasticsearch's native client in Laravel fashion using a Facade. For this step to work, you'll need to add an alias in `app/config/app.php` in the aliases array: `'Elastic' => 'PeterLeng\SpringSearch\Facades\Elastic'`.
+Finally, when you'll need it, you can access Elasticsearch's native client in Laravel fashion using a Facade. For this step to work, you'll need to add an alias in `app/config/app.php` in the aliases array: `'Elastic' => SpringSearch\Facades\Elastic::class`.
 
 ```php
 Elastic::index();
