@@ -1,5 +1,5 @@
 <?php
-namespace PeterLeng\SpringSearch;
+namespace PeterLeng\SpringSearch\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

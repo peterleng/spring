@@ -30,7 +30,7 @@ class SpringSearchServiceProvider extends ServiceProvider
      */
     protected function publishConfig()
     {
-        $this->publishes([__DIR__ . '/../config/spring.php' => config_path('spring.php')]);
+        $this->publishes([__DIR__ . '/../config/spring.php' => config_path('spring.php')],'config');
     }
 
 
@@ -40,9 +40,7 @@ class SpringSearchServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/spring.php', 'spring'
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../config/spring.php', 'spring');
 
         $this->registerElasticSearch();
     }
