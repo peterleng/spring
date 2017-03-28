@@ -1,0 +1,26 @@
+{
+  "name": "peterleng/spring-search",
+  "description": "Map Elasticsearch results to Eloquent models",
+  "license": "LGPL-3.0",
+  "keywords": ["laravel", "elasticsearch","eloquent"],
+  "authors": [{
+      "name": "Peter Leng",
+      "email": "lengyf117@gmail.com"
+  }],
+  "require": {
+      "php": ">=5.4.0",
+      "laravel/framework":"~5.1",
+      "elasticsearch/elasticsearch": "~2.2"
+  },
+  "autoload": {
+      "psr-4": {
+          "Spring\\": "src/Spring/"
+      }
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  }
+}
