@@ -58,7 +58,7 @@ use PeterLeng\SpringSearch\SpringModelTrait;
 
 class Product extends Eloquent {
     
-    use BouncyTrait;
+    use SpringModelTrait;
     
     // ...other Eloquent attributes
     // or methods.
@@ -413,18 +413,18 @@ If you are using a custom collection for Eloquent, you can still keep using Boun
 
 ```php
 use Illuminate\Database\Eloquent\Collection;
-use Fadion\Bouncy\BouncyCollectionTrait;
+use PeterLeng\SpringSearch\SpringCollectionTrait;
 
 class MyAwesomeCollection extends Collection {
 
-    use BouncyCollectionTrait;
+    use SpringCollectionTrait;
 
 }
 ```
 
 ## Elasticsearch Client Facade
 
-Finally, when you'll need it, you can access Elasticsearch's native client in Laravel fashion using a Facade. For this step to work, you'll need to add an alias in `app/config/app.php` in the aliases array: `'Elastic' => 'Fadion\Bouncy\Facades\Elastic'`.
+Finally, when you'll need it, you can access Elasticsearch's native client in Laravel fashion using a Facade. For this step to work, you'll need to add an alias in `app/config/app.php` in the aliases array: `'Elastic' => 'PeterLeng\SpringSearch\Facades\Elastic'`.
 
 ```php
 Elastic::index();
