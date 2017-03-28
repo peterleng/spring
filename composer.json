@@ -3,6 +3,7 @@
   "description": "Map Elasticsearch results to Eloquent models",
   "license": "LGPL-3.0",
   "keywords": ["laravel", "elasticsearch","eloquent"],
+  "version": "1.0",
   "authors": [{
       "name": "Peter Leng",
       "email": "lengyf117@gmail.com"
