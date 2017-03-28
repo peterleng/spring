@@ -1,5 +1,5 @@
 <?php
-namespace PeterLeng\SpringSearch;
+namespace SpringSearch;
 
 use Elasticsearch\Client as ElasticSearch;
 

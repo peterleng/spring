@@ -1,5 +1,5 @@
 <?php
-namespace PeterLeng\SpringSearch;
+namespace SpringSearch;
 
 use Illuminate\Support\Facades\Config;
 use Elasticsearch\Client as ElasticSearch;
