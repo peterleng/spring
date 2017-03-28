@@ -51,7 +51,7 @@ I was inspired and most of the implementation is based on [Elasticquent](https:/
 
 ## Setting Up
 
-There's only one step to tell your models that they should use Bouncy. Just add a trait! I'll be using a fictional `Product` model for the examples.
+There's only one step to tell your models that they should use SpringSearch. Just add a trait! I'll be using a fictional `Product` model for the examples.
 
 ```php
 use PeterLeng\SpringSearch\SpringModelTrait;
@@ -157,7 +157,7 @@ $product->reindex();
 
 Elasticsearch assumes that no document conflict will arise during indexing and as such, it doesn't provide automatic concurrency control. However, it does provide version information on documents that can be used to ensure that an older document doesn't override a newer one. This is the suggested technique described in the manual.
 
-Bouncy provides a single method for indexing by checking the version. It will only update the index if the version specified matches the one in the document, or return false otherwise. Obviously, it is concurrency-safe.
+SpringSearch provides a single method for indexing by checking the version. It will only update the index if the version specified matches the one in the document, or return false otherwise. Obviously, it is concurrency-safe.
 
 ```php
 $product = Product::find(10);
@@ -166,11 +166,11 @@ $product->indexWithVersion(3);
 
 ## Automatic Indexes
 
-Bouncy knows when a model is created, saved or deleted and it will reflect those changes to the indexes. Except for the initial index creation of an existing database, you'll generally won't need to use the above methods to manipulate indexes. Any new model's index will be added automatically, will be updated on save and removed when the model is deleted.
+SpringSearch knows when a model is created, saved or deleted and it will reflect those changes to the indexes. Except for the initial index creation of an existing database, you'll generally won't need to use the above methods to manipulate indexes. Any new model's index will be added automatically, will be updated on save and removed when the model is deleted.
 
 You can disable automatic indexes altogether by setting the `auto_index` config option to `false`. Doing so, it is up to you to sync your database to the index.
 
-The only cases where Bouncy can't update or delete indexes are when doing mass updates or deletes. Those queries run directly on the query builder and it's impossible to override them. I'm investigating for a good way of doing this, but for now, the following queries don't reflect changes on indexes:
+The only cases where SpringSearch can't update or delete indexes are when doing mass updates or deletes. Those queries run directly on the query builder and it's impossible to override them. I'm investigating for a good way of doing this, but for now, the following queries don't reflect changes on indexes:
 
 ```php
 Product::where('price', 100)->update(['price' => 110]);
@@ -193,11 +193,11 @@ Mappings can be created as easily as anything you've seen until now. They are de
 
 Add mapping properties to a model:
 ```php
-use Fadion\Bouncy\BouncyTrait;
+use PeterLeng\SpringSearch\SpringModelTrait;
 
 class Product extends Eloquent {
     
-    use BouncyTrait;
+    use SpringModelTrait;
     
     protected $mappingProperties = [
         'title' => [
@@ -242,7 +242,7 @@ if (Product::hasMapping()) {
 
 ## Searching
 
-Now on the real deal! Searching is where Elasticsearch shines and why you're bothering with it. Bouncy doesn't get in the way, allowing you to build any search query you can imagine in exactly the same way you do with Elasticsearch's client. This allows for great flexibility, while providing your results with a collection of Eloquent models.
+Now on the real deal! Searching is where Elasticsearch shines and why you're bothering with it. SpringSearch doesn't get in the way, allowing you to build any search query you can imagine in exactly the same way you do with Elasticsearch's client. This allows for great flexibility, while providing your results with a collection of Eloquent models.
 
 An example match query:
 ```php
@@ -266,7 +266,7 @@ The `$params` array is exactly as Elasticsearch expects for it to build a JSON r
 
 ## Pagination
 
-Paginated results are important in an application and it's generally a pain with raw Elasticsearch results. Another good reason for using Bouncy! It paginates results in exactly the same way as Eloquent does, so you don't have to learn anything new.
+Paginated results are important in an application and it's generally a pain with raw Elasticsearch results. Another good reason for using SpringSearch! It paginates results in exactly the same way as Eloquent does, so you don't have to learn anything new.
 
 Paginate to 15 models per page (default):
 ```php
@@ -286,7 +286,7 @@ $products->links();
 
 ## Limit
 
-For performance, limiting your search results should be done on the Elasticsearch parameter list with the `size` keyword. However, for easy limiting, Bouncy provides that functionality.
+For performance, limiting your search results should be done on the Elasticsearch parameter list with the `size` keyword. However, for easy limiting, SpringSearch provides that functionality.
 
 Limit to 50 results:
 ```php
@@ -295,7 +295,7 @@ $products = Product::search($params)->limit(50);
 
 ## Results Information
 
-Elasticsearch provides some information for the query, as the total number of hits or time taken. Bouncy's results collections have methods for easily accessing that information.
+Elasticsearch provides some information for the query, as the total number of hits or time taken. SpringSearch's results collections have methods for easily accessing that information.
 
 ```php
 $products = Product::search($params);
@@ -325,7 +325,7 @@ foreach ($products as $product) {
 
 ## Highlights
 
-Highlights are a nice visual feature to enhance your search results. Bouncy makes it really easy to access the highlighted fields.
+Highlights are a nice visual feature to enhance your search results. SpringSearch makes it really easy to access the highlighted fields.
 
 ```php
 $params = [
@@ -352,7 +352,7 @@ The `highlight()` method will access any highlighted field with the provided nam
 
 ## Searching Shorthands
 
-Having flexibility and all is great, but there are occassions when you just need to run a simple match query and get the job done, without writting a full parameters array. Bouncy offers some shorthand methods for the most common search queries. They work and handle results in the same way as `search()` does, so all of the above applies to them too.
+Having flexibility and all is great, but there are occassions when you just need to run a simple match query and get the job done, without writting a full parameters array. SpringSearch offers some shorthand methods for the most common search queries. They work and handle results in the same way as `search()` does, so all of the above applies to them too.
 
 match query:
 ```php
@@ -386,14 +386,14 @@ $products = Product::moreLikeThis(Array $fields, Array $ids, $minTermFreq = 1, $
 
 ## Customizing Document Fields
 
-Bouncy will use your model's attributes while indexing and that should be fine for most cases. However, if you want to have control over the Elasticsearch documents structure, you can customize the fields by adding a `$documentFields` method to your model:
+SpringSearch will use your model's attributes while indexing and that should be fine for most cases. However, if you want to have control over the Elasticsearch documents structure, you can customize the fields by adding a `$documentFields` method to your model:
 
 ```php
-use Fadion\Bouncy\BouncyTrait;
+use PeterLeng\SpringSearch\SpringModelTrait;
 
 class Product extends Eloquent {
     
-    use BouncyTrait;
+    use SpringModelTrait;
     
     public function documentFields()
     {
@@ -409,7 +409,7 @@ class Product extends Eloquent {
 
 ## Custom Collection
 
-If you are using a custom collection for Eloquent, you can still keep using Bouncy's methods. You'll just need to add a trait to your collection class.
+If you are using a custom collection for Eloquent, you can still keep using SpringSearch's methods. You'll just need to add a trait to your collection class.
 
 ```php
 use Illuminate\Database\Eloquent\Collection;
