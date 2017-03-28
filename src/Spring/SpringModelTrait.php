@@ -36,7 +36,7 @@ trait SpringModelTrait {
      * @param array $body
      * @return integer
      */
-    public static function count(Array $body)
+    public static function count(array $body)
     {
         $instance = new static;
         $params = $instance->basicElasticParams();
@@ -53,7 +53,7 @@ trait SpringModelTrait {
      * @param array $body
      * @return ElasticCollection
      */
-    public static function search(Array $body)
+    public static function search(array $body)
     {
         $instance = new static;
         $params = $instance->basicElasticParams();

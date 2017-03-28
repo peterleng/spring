@@ -27,11 +27,16 @@ class ElasticCollection extends Collection {
      * Paginates the Elasticsearch results.
      *
      * @param int $perPage
-     * @return mixed
+     * @param string $pageName
+     * @return LengthAwarePaginator
      */
-    public function paginate($perPage = 15)
+    public function paginate($perPage = 15,$pageName = 'page')
     {
-        return new LengthAwarePaginator($this->items,count($this->items),$perPage);
+        $page = Paginator::resolveCurrentPage($pageName);
+        $start = ($page - 1) * $perPage;
+        $items = array_slice($this->items, $start, $perPage);
+
+        return new LengthAwarePaginator($items,count($this->items),$perPage);
     }
 
 
@@ -39,26 +44,16 @@ class ElasticCollection extends Collection {
      * simplePaginate the Elasticsearch results.
      *
      * @param int $perPage
-     * @param array $columns
      * @param string $pageName
-     * @param null $page
      * @return Paginator
      */
-    public function simplePaginate($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null)
+    public function simplePaginate($perPage = 15, $pageName = 'page')
     {
-        $page = $page ?: Paginator::resolveCurrentPage($pageName);
+        $page = Paginator::resolveCurrentPage($pageName);
+        $start = ($page - 1) * $perPage;
+        $items = array_slice($this->items, $start, $perPage);
 
-        $perPage = $perPage ?: $this->model->getPerPage();
-
-        // Next we will set the limit and offset for this query so that when we get the
-        // results we get the proper section of results. Then, we'll create the full
-        // paginator instances for these results with the given page and per page.
-        $this->skip(($page - 1) * $perPage)->take($perPage + 1);
-
-        return new Paginator($this->items, $perPage, $page, [
-            'path' => Paginator::resolveCurrentPath(),
-            'pageName' => $pageName,
-        ]);
+        return new Paginator($items, $perPage, $page);
     }
 
     /**
