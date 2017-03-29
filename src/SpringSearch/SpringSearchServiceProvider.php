@@ -4,7 +4,7 @@
  * DateTime: 2017/3/28 11:16
  */
 
-namespace SpringSearch;
+namespace PeterLeng\SpringSearch;
 
 
 use Illuminate\Support\ServiceProvider;

@@ -1,5 +1,5 @@
 <?php
-namespace SpringSearch;
+namespace PeterLeng\SpringSearch;
 
 use Illuminate\Support\Collection;
 
